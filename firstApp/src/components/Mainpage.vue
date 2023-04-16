@@ -1,7 +1,7 @@
 <template>
     <div style="height: 100vh;width: 100%;">
         <el-container>
-            <el-aside style="width:80px;padding:0px;">
+            <el-aside style="width:80px;padding:0px;background-color: rgb(98,129,250);height: 100vh;" >
                         <span class="head">
                             <img mode="withFix" class="h_img" src="../assets/yizi.png">
                         </span>
@@ -26,7 +26,12 @@
             </el-aside>
             <el-container>
                 <el-header style="background-color: rgb(239,239,239);"><top1/></el-header>
-                <el-main style="padding: 0;background-color: #fff;"  ><page2_1 v-show="page===2&&state==0" ></page2_1></el-main>
+                <el-main style="padding: 0;background-color: #fff;"  >
+                  <page2_1 v-show="page===2&&state==0" ></page2_1>
+                  <page3_1 v-show="page===3&&state==0" ></page3_1>
+                  <page3_2 v-show="page===3&&state==1" ></page3_2>
+                  <page3_3 v-show="page===3&&state==2" ></page3_3>
+                </el-main>
             </el-container>
         </el-container>
     </div> 
@@ -34,13 +39,19 @@
     
     <script>
     import page2_1 from '@/components/page2/page2_1';
+    import page3_1 from '@/components/page3/page3_1';
+    import page3_2 from '@/components/page3/page3_2';
+    import page3_3 from '@/components/page3/page3_3';
     import top1 from '@/components/top1';
     import state from '@/components/state';
     export default {
       components: {
         page2_1,
         top1,
-        state
+        state,
+        page3_1,
+        page3_2,
+        page3_3,
       },
       data() {
         return {
@@ -77,7 +88,7 @@
     </script>
     
     
-    <style>
+    <style scoped>
       .el-header, .el-footer {
         background-color: #B3C0D1;
         color: #333;
