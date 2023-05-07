@@ -28,7 +28,7 @@
                 <el-header style="background-color: rgb(239,239,239);"><top1/></el-header>
                 <el-main style="padding: 0;background-color: #fff;"  >
                   <page2_1 v-show="page===2&&state==0" ></page2_1>
-                  <page3_1 v-show="page===3&&state==0" ></page3_1>
+                  <page3_1 v-show="page===2&&state==1" ></page3_1>
                   <page3_2 v-show="page===3&&state==1" ></page3_2>
                   <page3_3 v-show="page===3&&state==2" ></page3_3>
                 </el-main>
