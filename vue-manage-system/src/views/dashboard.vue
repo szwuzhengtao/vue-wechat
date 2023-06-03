@@ -6,7 +6,7 @@
 					<div class="user-info">
 						<el-avatar :size="120" :src="imgurl" />
 						<div class="user-info-cont">
-							<div class="user-info-name">{{ name }}</div>
+							<div class="user-info-name">{{ newname }}</div>
 							<div>{{ role }}</div>
 						</div>
 					</div>
@@ -126,6 +126,7 @@ import Schart from 'vue-schart';
 import { reactive } from 'vue';
 import imgurl from '../assets/img/img.jpg';
 
+const newname=localStorage.getItem('ms_newusername');
 const name = localStorage.getItem('ms_username');
 const role: string = name === 'admin' ? '超级管理员' : '普通用户';
 

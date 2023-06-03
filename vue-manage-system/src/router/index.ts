@@ -220,6 +220,15 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "import" */ '../views/Contact.vue'),
             },
+            {
+                path: '/chatdetail',
+                name: 'chatdetail',
+                meta: {
+                    title: '具体群聊',
+                    permiss: '14',
+                },
+                component: () => import(/* webpackChunkName: "import" */ '../views/chatdetail.vue'),
+            },
             
         ],
     },

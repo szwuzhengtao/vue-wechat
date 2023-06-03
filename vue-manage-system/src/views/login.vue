@@ -35,7 +35,6 @@
 import { ref, reactive } from 'vue';
 import { useTagsStore } from '../store/tags';
 import { usePermissStore } from '../store/permiss';
-import { usingToken } from '../store/token';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
@@ -64,16 +63,16 @@ const rules: FormRules = {
 };
 const permiss = usePermissStore();
 const login = ref<FormInstance>();
-	const token=usingToken();
 const submitForm = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate((valid: boolean) => {
 		if (valid) {
-			const requestBody: any= {
+		 	const requestBody: any= {
 				staffAccount: param.username,
 				staffPassword: param.password
 				};
 				console.log(requestBody);
+				/*
 				//编写前端代码使用，默认为admin权限
 				ElMessage.success('登录成功');
 			   localStorage.setItem('ms_username', param.username);
@@ -81,22 +80,45 @@ const submitForm = (formEl: FormInstance | undefined) => {
 			   permiss.handleSet(keys);
 			    localStorage.setItem('ms_keys', JSON.stringify(keys));
 				
-			   router.push('/dashboard'); 
-		/* 	getlogin(requestBody).then(response=>{
+			   router.push('/dashboard');  */
+			getlogin(requestBody).then(response=>{
+				console.log(response);
+				if(response.data.code=="200"){
 				console.log(response.data.data);
-                 token.setToken(response.data.data.token);
-				 console.log(token.token);
+             
+				 localStorage.setItem('ms_token',JSON.stringify(response.data.data.token));
 				 ElMessage.success('登录成功');
-			   localStorage.setItem('ms_username', param.username);
-			   const keys = permiss.defaultList[ param.username == 'admin' ? 'admin' :  'user'];
-			   permiss.handleSet(keys);
-			    localStorage.setItem('ms_keys', JSON.stringify(keys));
-				
-			   router.push('/allcustomer'); 
-			}) */
+				 const had=response.data.data.admin;
+				 let name='';
+				     if(had==='no'){
+					   localStorage.setItem('ms_username', 'user');
+					   name='user';
+					 }
+					 else{
+						localStorage.setItem('ms_username', 'admin');
+						name='admin';
+					 }
+					let  staffName='';
+					staffName=String(response.data.data.staffName);
+					localStorage.setItem('ms_nowusername',staffName);
+					//const keys = permiss.defaultList[name== 'admin' ? 'admin' :  'user'];  测试用
+					const keys = permiss.defaultList['admin'];
+					permiss.handleSet(keys);
+					localStorage.setItem('ms_keys', JSON.stringify(keys));
+					if(name==='admin')
+					router.push('/dashboard');
+					else
+					router.push('/allcustomer'); 
+					
+				}
+				else{
+					ElMessage.error('账号或密码错误');
+			        return false;
+				}
+			}) 
 			
 		} else {
-			ElMessage.error('登录成功');
+			ElMessage.error('请输入正确的账号密码');
 			return false;
 		}
 	});

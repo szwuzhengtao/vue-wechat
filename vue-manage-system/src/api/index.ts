@@ -1,5 +1,4 @@
 import request from '../utils/request';
-import { usingToken } from '../store/token';
 import { Header } from 'element-plus/es/components/table-v2/src/components';
 export const fetchData = () => {
     return request({
@@ -23,14 +22,28 @@ export const getlogin=(requestBody:RequestBody)=>{
     });
 }
 
-const token=usingToken();
+const Token:string  =localStorage.getItem('ms_token');
+
+
 export const getuser=()=>{
 
     return request({
         url: 'http://localhost:9090/staff/select',
         method:'get',
         headers:{
-            token:token.token,
+            token:Token,
+        }
+        
+    });
+}
+
+export const getchat=()=>{
+
+    return request({
+        url: 'http://localhost:9090/chat/select',
+        method:'get',
+        headers:{
+            token:Token,
         }
         
     });
