@@ -4,7 +4,7 @@
         <el-aside width="900px" >
                 <el-container >
                     <el-aside :class="{allwidth:!showContent,width2:showContent}">
-                      <el-header class="chat_name">Header</el-header>
+                      <el-header class="chat_name">{{chaTName}}</el-header>
                       <el-main style="height: 75vh; position: relative;">
                               <div class="button-container">
                                 <el-select v-model="value" class="m-2" placeholder="筛选群成员" >
@@ -24,30 +24,33 @@
                                   />
                                 </el-select>
                                 <button class="m-2" style="color: white; background: rgb(62,129,244); border: none;" @click="showContent=!showContent">备  注</button>
-                                <button class="m-2" style="color: white; background: rgb(62,129,244); border: none;" @click="showmessage = true">添加聊天块</button>
+                                <button class="m-2" style="color: white; background: rgb(62,129,244); border: none;" @click="showmessage = true,addnews=true">添加聊天块</button>
                               </div>
                               <div style="height: 100%;">
-                                  <div class="left_message" >
-                                      <img mode="width-fix" src="../assets/img/people.png">
-                                      <div style="width:100%">
-                                              <div style="display: flex; width: 100%;">
-                                              <div class="user_name">文峰</div>
-                                              <div class="user_message">2020年5月31日16：00</div>
-                                              </div>
-                                              <div class="allmessage">111111111111111111111122222222222222222223333333</div>
-                                      </div>
-                                  </div>
-                                  
-                                <!--   <div class="right_message" >
-                                      <div style="width:100%">
-                                              <div style="display: flex; width: 100%;">
-                                              <div class="user_message">2020年5月31日16：00</div>
-                                              <div class="user_name">文峰</div>
-                                              </div>
-                                              <div class="allmessage">11111</div>
-                                      </div>
-                                      <img mode="width-fix" src="../assets/img/infor_all.png">
-                                  </div> -->
+                                <div  v-for="(item, index) in tableData" :key="index">
+                                    <div class="left_message" v-if="!item.isCustomer">
+                                        <img mode="width-fix" src="../assets/img/people.png">
+                                        <div style="max-width:90%;min-width: 50%;" >
+                                                <div style="display: flex; width: 100%;">
+                                                <div class="user_name">{{ item.nickname }}</div>
+                                                <div class="user_message">{{ item.time }}</div>
+                                                </div>
+                                                <div class="allmessage" >{{ item.content }}</div>
+                                        </div>
+                                        <img v-show="addnews" mode="width-fix" src="../assets/img/allchat_add.png" style="width: 1.5rem;height: 1.5rem;margin-top: 27px;margin-left: 5px;" @click="addcontent(item)">
+                                    </div>
+                                    
+                                    <div class="right_message" v-else>
+                                        <div style="width:100%">
+                                                <div style="display: flex; width: 100%;">
+                                                <div class="user_message">2020年5月31日16：00</div>
+                                                <div class="user_name">文峰</div>
+                                                </div>
+                                                <div class="allmessage">11111</div>
+                                        </div>
+                                        <img mode="width-fix" src="../assets/img/infor_all.png">
+                                    </div> 
+                                </div>
                               </div>
                         </el-main>
                     </el-aside>
@@ -64,17 +67,17 @@
                             
                           >
                             <el-form-item label="标题： " style="margin-left: 0rem;">
-                              <el-input v-model="formLabelAlign.name" />
+                              <el-input v-model="formLabelAlign.title" />
                             </el-form-item>
                             <el-form-item label="客户： ">
-                              <el-input v-model="formLabelAlign.type" />
+                              <el-input v-model="formLabelAlign.customerId" />
                             </el-form-item>
                             <el-form-item label="备注： " >
-                              <el-input  v-model="formLabelAlign.type" :rows="17" type="textarea"  />
+                              <el-input  v-model="formLabelAlign.note" :rows="17" type="textarea"  />
                             </el-form-item>
                             <el-form-item>
                             <el-button type="primary" @click="onSubmit">创建</el-button>
-                            <el-button @click="showmessage = false">取消</el-button>
+                            <el-button @click="showmessage = false,addnews=false" >取消</el-button>
                           </el-form-item>
                           </el-form>
                           
@@ -82,15 +85,18 @@
                         <el-main style="width: 50%;height: 100%;">
                            <div class="news">
                             <div style="height: 90%;">
-                                  <div class="left_message" >
-                                      <img mode="width-fix" src="../assets/img/people.png">
-                                      <div style="width:100%">
-                                              <div style="display: flex; width: 100%;">
-                                              <div class="user_name">文峰</div>
-                                              <div class="user_message">2020年5月31日16：00</div>
-                                              </div>
-                                              <div class="allmessage">111111111111111111111122222222222222222223333333</div>
-                                      </div>
+                                  <div  v-for="(item, index) in usedtable" :key="index">
+                                        <div class="left_message" >
+                                            <img mode="width-fix" src="../assets/img/people.png">
+                                            <div style="max-width:90%;min-width: 70%;">
+                                                    <div style="display: flex; width: 100%;">
+                                                    <div class="user_name">{{ item.nickname }}</div>
+                                                    <div class="user_message">{{item.time}}</div>
+                                                    </div>
+                                                    <div class="allmessage">{{ item.content }}</div>
+                                            </div>
+                                            <img v-show="addnews" mode="width-fix" src="../assets/img/allchat_discunt.png" style="width: 1.5rem;height: 1.5rem;margin-top: 40px;margin-left: 5px;" @click="deletecontent(index)">
+                                        </div>
                                   </div>
                               </div>
                             </div>
@@ -160,14 +166,76 @@
   </template>
 
 <script  setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref } from 'vue';
+import { getchatdetail } from '../api/index';
+import {addchatdetail} from '../api/index';
+import { useRoute, RouterLink } from 'vue-router';
+import { ElMessage } from 'element-plus';
 const showContent=ref(false);
 const showmessage=ref(false);
-const formLabelAlign={name:'',region:'',type:''};
+const formLabelAlign=ref({customerId:'',title:'',note:''});
+const addnews=ref(false);
+//传出的群聊id
+const id: String=localStorage.getItem('ms_findchatid');
+const chaTName=ref(localStorage.getItem('ms_findchatName'));
+const getData = () => {
+  console.log(id);
+    getchatdetail(id).then(res=>{
+      console.log(res);
+      tableData.value=res.data.data;
+      console.log(tableData);
+})
+}
+getData();
+interface TableItem {
+	recordId:String,
+  personId:String,
+  nickname:String,
+  avatarURL:String,
+  time:String,
+  chatName:String,
+  content:String,
+  isCustomer:String,
+}
+const tableData = ref<TableItem[]>([]);
 
 
+let usedtable=ref<TableItem[]>([]);
+  let recordIds=[];
+const addcontent=(data:TableItem)=>{
+   usedtable.value.push(data);
+   recordIds.push(data.recordId);
+   
+}
 
-
+const deletecontent=(index:number)=>{
+  if (index >= 0 && index < tableData.value.length) {
+    usedtable.value.splice(index, 1);
+    recordIds.splice(index, 1); 
+  }
+}
+interface lastdata {
+	recordIds:any[],
+  customerId:string,
+  title:string,
+  note:string,
+  staffId:string,
+}
+const onSubmit=()=>{
+  let  Lastdata:lastdata={
+  customerId:formLabelAlign.value.customerId,
+ note:formLabelAlign.value.note,
+  recordIds:recordIds,
+  title:formLabelAlign.value.title,
+  staffId:localStorage.getItem('ms_staffId'),
+  }
+  addchatdetail(Lastdata).then(res=>{
+    console.log(res);
+     window.alert("创建成功");
+         console.log('创建成功');
+         
+  })
+}
 </script>
 
 
@@ -199,6 +267,7 @@ const formLabelAlign={name:'',region:'',type:''};
     height: 70px;
     padding-bottom: 5px;
     margin-bottom: 10px;
+
 }
 
 .left_message img{
@@ -220,7 +289,7 @@ const formLabelAlign={name:'',region:'',type:''};
 }
 
 .allmessage{
-     width:97%;
+    max-width:97%;
      word-break: break-all;
    word-wrap: break-word;
   background: rgb(62,129,244);
@@ -228,9 +297,10 @@ const formLabelAlign={name:'',region:'',type:''};
    min-height: 1rem;
    padding-left: 5px;
    margin-top:7px;
+   margin-left: 5px;
    padding-bottom: 5px;
    padding-top: 5px;
-   border-radius: 10px;
+   border-radius: 5px;
 }
 
 

@@ -87,6 +87,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 				console.log(response.data.data);
              
 				 localStorage.setItem('ms_token',response.data.data.token);
+				 localStorage.setItem('ms_staffId',response.data.data.staffId);
 				 ElMessage.success('登录成功');
 				 const had=response.data.data.admin;
 				 let name='';

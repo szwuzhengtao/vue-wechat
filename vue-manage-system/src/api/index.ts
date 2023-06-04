@@ -37,7 +37,7 @@ export const getuser=()=>{
   
 }
 
-//获得所以群聊
+//获得所有群聊
 export const getchat=()=>{
 
     return request({
@@ -50,7 +50,25 @@ export const getchat=()=>{
     });
 }
 
+//查找某个群群聊记录
 
+export const getchatdetail=(id:string)=>{
+
+    const formData = new URLSearchParams();
+    formData.append('chatId', id);
+  
+    console.log(id);
+    return request({
+        url: 'http://localhost:9090/record/select/chat',
+        method:'post',
+        data: formData.toString(),
+        headers:{
+            token:Token,
+            
+        }
+        
+    });
+}
 
 
 //获得所有权限
@@ -115,6 +133,27 @@ export const getcustomer=()=>{
     return request({
         url: 'http://localhost:9090/customer/select',
         method:'post',
+        headers:{
+            token:Token,
+        },
+        
+        
+    });
+}
+
+//添加聊天块
+interface lastdata {
+	recordIds:any[],
+  customerId:string,
+  title:string,
+  note:string,
+  staffId:string,
+}
+export const addchatdetail=(Lastdata:lastdata)=>{
+    return request({
+        url: 'http://localhost:9090/block/add',
+        method:'post',
+        data:Lastdata,
         headers:{
             token:Token,
         },

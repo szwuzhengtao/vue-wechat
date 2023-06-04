@@ -11,25 +11,24 @@
 					<template #default="scope">
 						<el-image
 							class="table-td-thumb"
-							:src="scope.row.thumb"
+							:src="normalimg"
 							:z-index="10"
-							:preview-src-list="[scope.row.thumb]"
-							preview-teleported
-                         @click="gotochatdetail(scope.$index, scope.row)"
+					
+              @click="gotochatdetail(scope.row.chatId,scope.row.chatName)"          
 						>
 						</el-image>
 					</template>
 				</el-table-column>
-                <el-table-column prop="id" label="群ID"  align="center"></el-table-column>
-				<el-table-column prop="name" label="群名"></el-table-column>
-				<el-table-column label="人数">
-					<template #default="scope">￥{{ scope.row.money }}</template>
+                <el-table-column prop="chatId" label="群ID"  align="center"></el-table-column>
+				<el-table-column prop="chatName" label="群名"></el-table-column>
+				<el-table-column label="人数" prop="number">
+					
 				</el-table-column>
 				
 
-				<el-table-column prop="date" label="建群时间"></el-table-column>
-                <el-table-column prop="date" label="发展程度"></el-table-column>
-                <el-table-column prop="date" label="最近"></el-table-column>
+				<el-table-column prop="buildTime" label="建群时间"></el-table-column>
+                <el-table-column prop="degree" label="发展程度"></el-table-column>
+                <el-table-column prop="recent" label="最近"></el-table-column>
 				<el-table-column label="操作" width="220" align="center">
 					<template #default="scope">
 						<el-button text :icon="Edit" @click="handleEdit(scope.$index, scope.row)" v-permiss="15">
@@ -130,14 +129,15 @@ import {getchat} from '../api/index';
 import type { FormInstance, FormRules } from 'element-plus'
 import router from '../router';
 interface TableItem {
-	id: number;
-	name: string;
-	money: string;
-	state: string;
-	date: string;
-	address: string;
+	chatId: number;
+	chatName: string;
+	number: string;
+	buildTime: string;
+	degree: string;
+	recent: string;
 }
 
+const normalimg='https://lin-xin.gitee.io/images/post/wms.png';
 const query = reactive({
 	address: '',
 	name: '',
@@ -150,8 +150,8 @@ const pageTotal = ref(0);
 const getData = () => {
 	getchat().then(res => {
     console.log(res);
-/* 		 tableData.value = res.data.list;
-		pageTotal.value = res.data.pageTotal || 50;  */
+    tableData.value=res.data.data;
+		pageTotal.value = res.data.pageTotal || 50;  
 	});
 };
 getData();
@@ -196,20 +196,21 @@ const handleEdit = (index: number, row: any) => {
 const saveEdit = () => {
 	editVisible.value = false;
 	ElMessage.success(`修改第 ${idx + 1} 行成功`);
-	tableData.value[idx].name = form.name;
-	tableData.value[idx].address = form.address;
+	tableData.value[idx].chatName = form.name;
+	tableData.value[idx].recent = form.address;
 };
 
 
 // 点击头像具体跳转
-const gotochatdetail=(index:number,row:any)=>{
-    console.log(row.id);
+const gotochatdetail=(id:string,Name:string)=>{
+    console.log(id);
+    localStorage.setItem('ms_findchatid',id);
+    localStorage.setItem('ms_findchatName',Name);
     router.push({
         path:'./chatdetail',
-        query:{id:row.id}
-    })
+      
+})
 }
-
 //修改弹出框
 const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()
