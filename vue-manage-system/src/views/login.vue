@@ -72,7 +72,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 				staffPassword: param.password
 				};
 				console.log(requestBody);
-				/*
+				
 				//编写前端代码使用，默认为admin权限
 				ElMessage.success('登录成功');
 			   localStorage.setItem('ms_username', param.username);
@@ -80,13 +80,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
 			   permiss.handleSet(keys);
 			    localStorage.setItem('ms_keys', JSON.stringify(keys));
 				
-			   router.push('/dashboard');  */
-			getlogin(requestBody).then(response=>{
+			   router.push('/dashboard');  
+			/* getlogin(requestBody).then(response=>{
 				console.log(response);
 				if(response.data.code=="200"){
 				console.log(response.data.data);
              
-				 localStorage.setItem('ms_token',JSON.stringify(response.data.data.token));
+				 localStorage.setItem('ms_token',response.data.data.token);
 				 ElMessage.success('登录成功');
 				 const had=response.data.data.admin;
 				 let name='';
@@ -101,8 +101,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
 					let  staffName='';
 					staffName=String(response.data.data.staffName);
 					localStorage.setItem('ms_nowusername',staffName);
-					//const keys = permiss.defaultList[name== 'admin' ? 'admin' :  'user'];  测试用
-					const keys = permiss.defaultList['admin'];
+					const keys = permiss.defaultList[name== 'admin' ? 'admin' :  'user']; 
+					
 					permiss.handleSet(keys);
 					localStorage.setItem('ms_keys', JSON.stringify(keys));
 					if(name==='admin')
@@ -115,7 +115,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 					ElMessage.error('账号或密码错误');
 			        return false;
 				}
-			}) 
+			})  */
 			
 		} else {
 			ElMessage.error('请输入正确的账号密码');

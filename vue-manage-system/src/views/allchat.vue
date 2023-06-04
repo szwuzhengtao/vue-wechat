@@ -148,8 +148,9 @@ const pageTotal = ref(0);
 // 获取表格数据
 const getData = () => {
 	fetchData().then(res => {
-		tableData.value = res.data.list;
-		pageTotal.value = res.data.pageTotal || 50;
+    console.log(res);
+		/* tableData.value = res.data.list;
+		pageTotal.value = res.data.pageTotal || 50; */
 	});
 };
 getData();
