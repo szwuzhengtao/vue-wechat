@@ -26,7 +26,7 @@
 import { ref } from 'vue';
 import { ElTree } from 'element-plus';
 import { usePermissStore } from '../store/permiss';
-
+import {gethad} from '../api/index'
 const role = ref<string>('admin');
 
 interface Tree {
@@ -131,6 +131,14 @@ const getPremission = () => {
 	checkedKeys.value = permiss.defaultList[role.value];
 };
 getPremission();
+
+const getData = () => {
+   gethad('超级管理员').then(res=>{
+	   console.log(res);
+	  
+  })
+}
+getData();
 
 // 保存权限
 const tree = ref<InstanceType<typeof ElTree>>();

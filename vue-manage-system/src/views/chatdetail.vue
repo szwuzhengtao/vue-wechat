@@ -165,11 +165,6 @@ const showContent=ref(false);
 const showmessage=ref(false);
 const formLabelAlign={name:'',region:'',type:''};
 
-const toggleContent=()=> {
-      console.log("has changed");
-     showContent = !showContent;
-}
-  
 
 
 

@@ -103,7 +103,10 @@ import { Delete, Edit, Search, Plus, Memo } from '@element-plus/icons-vue';
 import { getuser } from '../api/index';
 import { useRouter } from 'vue-router';
 import router from '../router';
-import { usingToken } from '../store/token';
+
+import {gethome} from '../api/index';
+import {changehad} from '../api/index';
+import {getstaff_role} from '../api/index';
 interface TableItem {
 	id: number;
 	name: string;
@@ -135,7 +138,17 @@ const getData = () => {
 	   console.log(res.data.data);
 	   tableData.value=res.data.data;
 	   pageTotal.value=50;
-  })
+  });
+
+  gethome().then(res=>{
+     console.log(res);
+  });
+  getstaff_role('1').then(res=>{
+     console.log(res);
+  });
+  changehad('超级管理员').then(res=>{
+     console.log(res);
+  });
 }
 getData();
 

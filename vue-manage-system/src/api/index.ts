@@ -37,14 +37,75 @@ export const getuser=()=>{
   
 }
 
+//获得所以群聊
 export const getchat=()=>{
 
     return request({
         url: 'http://localhost:9090/chat/select',
-        method:'get',
+        method:'post',
         headers:{
             token:Token,
         }
+        
+    });
+}
+
+
+
+
+//获得所有权限
+export const gethad=(a:String)=>{
+    return request({
+        url: 'http://localhost:9090/role-manu/select',
+        method:'post',
+        data:{roleId:a},
+        headers:{
+            token:Token,
+        },
+        
+        
+    });
+}
+
+
+export const changehad=(a:String)=>{
+    return request({
+        url: 'http://localhost:9090/role-manu/select',
+        method:'post',
+        data:{roleId:a},
+        headers:{
+            token:Token,
+        },
+        
+        
+    });
+}
+
+
+// 查询某个用户的所有角色
+export const getstaff_role=(a:String)=>{
+    return request({
+        url: 'http://localhost:9090/staff-role/select',
+        method:'post',
+        data:{staffId:a},
+        headers:{
+            token:Token,
+        },
+        
+        
+    });
+}
+
+
+//数据总览
+export const gethome=()=>{
+    return request({
+        url: 'http://localhost:9090/analyze/home',
+        method:'post',
+        headers:{
+            token:Token,
+        },
+        
         
     });
 }
