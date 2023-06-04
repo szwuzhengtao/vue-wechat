@@ -2,11 +2,7 @@ import request from '../utils/request';
 import { Header } from 'element-plus/es/components/table-v2/src/components';
 export const fetchData = () => {
     return request({
-        url: 'http://localhost:9090/chat/select',
-        method: 'post',
-        headers:{
-            token:Token,
-        }
+        url: './table.json',
     });
 };
 
@@ -29,7 +25,7 @@ const Token:string  =localStorage.getItem('ms_token');
 
 
 export const getuser=()=>{
-    console.log(Token);
+  console.log(Token);
     return request({
         url: 'http://localhost:9090/staff/select',
         method:'get',

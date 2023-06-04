@@ -149,8 +149,8 @@ const pageTotal = ref(0);
 const getData = () => {
 	fetchData().then(res => {
     console.log(res);
-		/* tableData.value = res.data.list;
-		pageTotal.value = res.data.pageTotal || 50; */
+		 tableData.value = res.data.list;
+		pageTotal.value = res.data.pageTotal || 50; 
 	});
 };
 getData();
