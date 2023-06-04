@@ -113,6 +113,8 @@ interface TableItem {
 	address: string;
 }
 
+
+
 const query = reactive({
 	address: '',
 	name: '',
