@@ -109,3 +109,16 @@ export const gethome=()=>{
         
     });
 }
+
+//获得所有用户
+export const getcustomer=()=>{
+    return request({
+        url: 'http://localhost:9090/customer/select',
+        method:'post',
+        headers:{
+            token:Token,
+        },
+        
+        
+    });
+}

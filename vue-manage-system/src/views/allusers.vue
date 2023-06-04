@@ -107,6 +107,8 @@ import router from '../router';
 import {gethome} from '../api/index';
 import {changehad} from '../api/index';
 import {getstaff_role} from '../api/index';
+import {getchat} from '../api/index';
+import {getcustomer} from '../api/index';
 interface TableItem {
 	id: number;
 	name: string;
@@ -147,6 +149,12 @@ const getData = () => {
      console.log(res);
   });
   changehad('超级管理员').then(res=>{
+     console.log(res);
+  });
+  getchat().then(res=>{
+     console.log(res);
+  });
+  getcustomer().then(res=>{
      console.log(res);
   });
 }
