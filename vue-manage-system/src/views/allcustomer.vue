@@ -122,14 +122,11 @@
                 </el-form>
             </div>
             <div v-if="ContactFlag" class="Show1" > 
-               <div style="min-height: 80px;padding: 4px;">
-                  <header style="color: rgb(22,132,252); font-size: 17px;">ikun群</header>
+               <div style="min-height: 80px;padding: 4px; margin-bottom: 4px;" v-bind="recordIdDetails" >
+                  <header style="color: rgb(22,132,252); font-size: 17px;">{{ recordIdDetails.chatName }}</header>
                    <div style="border:solid rgb(96,96,96);border-radius:10px;min-height: 60px;">
                     <header style="font-size: larger;font-weight: bold;padding: 4px;">关于第一个五年计划</header>
-                    <div style="width: 80%;overflow: hidden;color: rgb(96,96,96);">111111111111111111111111111111111111111111111111111111111111</div>
-                    <div style="width: 80%;overflow: hidden;color: rgb(96,96,96);">11111111111111111111111</div>
-                    <div style="width: 80%;overflow: hidden;color: rgb(96,96,96);">11111111111111111111111</div>
-                    <div style="width: 80%;overflow: hidden;color: rgb(96,96,96);">11111111111111111111111</div>
+                    <div style="width: 80%;overflow: hidden;color: rgb(96,96,96);">{{ recordIdDetails.nickname }}+": "+{{ recordIdDetails.content }}</div>
                    </div>
                </div>
             </div>
@@ -161,7 +158,7 @@
     import { ElMessage, ElMessageBox } from 'element-plus';
     import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue';
     import { getcustomer } from '../api/index';
-
+    import { getchatblock } from '../api/index';
     // import { ref } from 'vue'
     // import { ElMessageBox } from 'element-plus'
 
@@ -172,19 +169,25 @@
     const ShowCustomerFlag = ref(true);
     const ContactFlag = ref(false);
 
+//获取聊天块内容
+
 
 //获得右侧要操作客户信息
 let customerTable= {
-  name:"",address:"",phone:"",time:"",staff:"",note:"",
+  name:"",address:"",phone:"",time:"",staff:"",note:"",id:""
 };
 
+let recordIdDetails=ref();
    const handleCustomer=(a:any)=>{
-
+  customerTable.id=a.customerId;
   customerTable.name=a.customerName;
      customerTable.address=a.customerAddress;
      customerTable.phone=a.customerPhone;
      customerTable.time=a.customerJointime;
      customerTable.staff=a.chargeStaff; 
+     getchatblock(a.customerId).then(res=>{
+        recordIdDetails=res.data.data.recordIdDetails;
+     })
    }
 
     function cancelClick() {

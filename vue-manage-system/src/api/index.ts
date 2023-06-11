@@ -162,3 +162,18 @@ export const addchatdetail=(Lastdata:lastdata)=>{
     });
 }
 
+
+//查找用户的聊天块
+
+export const getchatblock=(a:String)=>{
+    return request({
+        url: 'http://localhost:9090/block/select/person',
+        method:'post',
+        data:{personId:a},
+        headers:{
+            token:Token,
+        },
+        
+        
+    });
+}
