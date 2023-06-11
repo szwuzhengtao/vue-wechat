@@ -2,46 +2,23 @@
     <div>
         <div class="container">
             <div class="handle-box">
-                <el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
                 <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
                 <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
                 <el-button type="primary" :icon="Plus">新增</el-button>
             </div>
             <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
 
-                <el-table-column prop="id" label="性别" width="55" align="center"></el-table-column>
-                <el-table-column label="头像" align="center">
-                    <template #default="scope">
-                        <el-image
-                                class="table-td-thumb"
-                                :src="scope.row.thumb"
-                                :z-index="10"
-                                :preview-src-list="[scope.row.thumb]"
-                                preview-teleported
-                        >
-                        </el-image>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="name" label="用户名"></el-table-column>
-                <el-table-column label="电话">
-                    <template #default="scope">￥{{ scope.row.money }}</template>
-                </el-table-column>
+                <el-table-column prop="customerId" label="客户ID"  align="center"></el-table-column>
+                <el-table-column prop="customerName" label="客户名称"  align="center"></el-table-column>
+                <el-table-column prop="customerGender" label="客户性别"  align="center"></el-table-column>
+                <el-table-column prop="customerPhone" label="客户电话" align="center"></el-table-column>
+                <el-table-column prop="customerEmail"  align="center" label="客户邮箱"> </el-table-column>
 
-                <el-table-column prop="address" label="客户地址"></el-table-column>
-                <el-table-column label="录入人" align="center">
-                    <template #default="scope">
-                        <el-tag
-                                :type="scope.row.state === '成功' ? 'success' : scope.row.state === '失败' ? 'danger' : ''"
-                        >
-                            {{ scope.row.state }}
-                        </el-tag>
-                    </template>
-                </el-table-column>
+                <el-table-column prop="customerAddress" label="客户地址"></el-table-column>
 
-                <el-table-column prop="date" label="客户录入时间"></el-table-column>
+
+                <el-table-column prop="customerJointime" label="客户录入时间"></el-table-column>
+                <el-table-column prop="chargeStaff" label="负责人"></el-table-column>
                 <el-table-column label="操作" width="290" align="center">
                     <template #default="scope">
                         <el-button text :icon="Edit" @click="handleEdit(scope.$index, scope.row)" v-permiss="15">
@@ -50,7 +27,7 @@
                         <el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)" v-permiss="16">
                             删除
                         </el-button>
-                        <el-button  text :icon="Search" type="primary"  @click="drawer = true" v-permiss="17">
+                        <el-button  text :icon="Search" type="primary"   v-permiss="17"  @click="handleCustomer(scope.row),drawer = true">
                             详情
                         </el-button>
                     </template>
@@ -69,22 +46,22 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" v-model="editVisible" width="30%" >
-            <el-form label-width="70px">
+        <el-dialog title="编辑" v-bind="editVisible" width="30%" >
+            <el-form label-width="70px" >
                 <el-form-item label="用户名">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="customerTable.name"></el-input>
                 </el-form-item>
                 <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                    <el-input v-model="customerTable.address"></el-input>
                 </el-form-item>
                 <el-form-item label="电话">
-                    <el-input v-model="form.money"></el-input>
+                    <el-input v-model="customerTable.phone"></el-input>
                 </el-form-item>
                 <el-form-item label="录入时间">
-                    <el-input v-model="form.date"></el-input>
+                    <el-input v-model="customerTable.time"></el-input>
                 </el-form-item>
                 <el-form-item label="录入人">
-                    <el-input v-model="form.state"></el-input>
+                    <el-input v-model="customerTable.staff"></el-input>
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -106,67 +83,34 @@
             <el-button class="btn-dig" >
                 客户资料
             </el-button>
-            <el-button class="btn-dig">
-                跟进联系
-            </el-button>
-            <el-button class="btn-dig">
+            <el-button class="btn-dig" @click="ShowCustomerFlag=false,ContactFlag=true">
                 对话模块
             </el-button>
 
             <br/><br/><br/>
-            <div v-if="ShowCustomerFlag" class="Show1" >
-                <el-form label-width="70px" >
-<!--                    <div style="border-bottom: 2px solid #ccc;"></div><br/>-->
-                    <el-form-item label="用户名" >
-                        {{"张三"}}
-                    </el-form-item>
-                    <div style="border-bottom: 2px solid #ccc;"></div><br/>
-                    <el-form-item label="地址">
-                        {{"广东省东莞市长安镇"}}
-                    </el-form-item>
-                    <div style="border-bottom: 2px solid #ccc;"></div><br/>
-                    <el-form-item label="电话">
-                        {{"123"}}
-                    </el-form-item>
-                    <div style="border-bottom: 2px solid #ccc;"></div><br/>
-                    <el-form-item label="录入时间">
-                        {{"2019-11-1"}}
-                    </el-form-item>
-                    <div style="border-bottom: 2px solid #ccc;"></div><br/>
-                    <el-form-item label="录入人">
-                        {{"2019-11-1"}}
-                    </el-form-item>
-                    <div style="border-bottom: 2px solid #ccc;"></div><br/>
-                    <el-form-item label="客户备注">
-                        {{"这个人工作很认真负责任，值得好好深入发展！喜欢喝咖啡。不吃香菜爱香水,"+
-                            "性格热情开朗，待人友好，为人诚实谦虚。工作勤奋，认真负责，能吃苦耐劳,"+
-                    "尽职尽责，有耐心。具有亲和力，平易近人，善于与人沟通。"}}
-                    </el-form-item>
-                    <div style="border-bottom: 2px solid #ccc;"></div><br/>
-                </el-form>
-            </div>
+          
 
-            <div v-if="ContactFlag" class="Show1" >
-                <el-form label-width="70px" >
+            <div v-if="ShowCustomerFlag" class="Show1" >
+                <el-form label-width="70px" v-model="customerTable">
                     <!--                    <div style="border-bottom: 2px solid #ccc;"></div><br/>-->
                     <el-form-item label="用户名" >
-                        {{"张三"}}
+                        {{customerTable.name}}
                     </el-form-item>
                     <div style="border-bottom: 2px solid #ccc;"></div><br/>
                     <el-form-item label="地址">
-                        {{"广东省东莞市长安镇"}}
+                        {{customerTable.address}}
                     </el-form-item>
                     <div style="border-bottom: 2px solid #ccc;"></div><br/>
                     <el-form-item label="电话">
-                        {{"123"}}
+                        {{customerTable.phone}}
                     </el-form-item>
                     <div style="border-bottom: 2px solid #ccc;"></div><br/>
                     <el-form-item label="录入时间">
-                        {{"2019-11-1"}}
+                        {{customerTable.time}}
                     </el-form-item>
                     <div style="border-bottom: 2px solid #ccc;"></div><br/>
                     <el-form-item label="录入人">
-                        {{"2019-11-1"}}
+                        {{customerTable.staff}}
                     </el-form-item>
                     <div style="border-bottom: 2px solid #ccc;"></div><br/>
                     <el-form-item label="客户备注">
@@ -177,7 +121,18 @@
                     <div style="border-bottom: 2px solid #ccc;"></div><br/>
                 </el-form>
             </div>
-
+            <div v-if="ContactFlag" class="Show1" > 
+               <div style="min-height: 80px;padding: 4px;">
+                  <header style="color: rgb(22,132,252); font-size: 17px;">ikun群</header>
+                   <div style="border:solid rgb(96,96,96);border-radius:10px;min-height: 60px;">
+                    <header style="font-size: larger;font-weight: bold;padding: 4px;">关于第一个五年计划</header>
+                    <div style="width: 80%;overflow: hidden;color: rgb(96,96,96);">111111111111111111111111111111111111111111111111111111111111</div>
+                    <div style="width: 80%;overflow: hidden;color: rgb(96,96,96);">11111111111111111111111</div>
+                    <div style="width: 80%;overflow: hidden;color: rgb(96,96,96);">11111111111111111111111</div>
+                    <div style="width: 80%;overflow: hidden;color: rgb(96,96,96);">11111111111111111111111</div>
+                   </div>
+               </div>
+            </div>
 <!--            <span>Hi, there!</span>-->
         </el-drawer>
 
@@ -205,19 +160,32 @@
     import { ref, reactive } from 'vue';
     import { ElMessage, ElMessageBox } from 'element-plus';
     import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue';
-    import { fetchData } from '../api/index';
+    import { getcustomer } from '../api/index';
 
     // import { ref } from 'vue'
     // import { ElMessageBox } from 'element-plus'
 
-    const drawer = ref(false)
-    const drawer2 = ref(false)
-    const direction = ref('rtl')
-    const radio1 = ref('Option 1')
-    const ShowCustomerFlag = ref(true)
-    const ContactFlag = ref(false)
+    const drawer = ref(false);
+    const drawer2 = ref(false);
+    const direction = ref('rtl');
+    const radio1 = ref('Option 1');
+    const ShowCustomerFlag = ref(true);
+    const ContactFlag = ref(false);
 
 
+//获得右侧要操作客户信息
+let customerTable= {
+  name:"",address:"",phone:"",time:"",staff:"",note:"",
+};
+
+   const handleCustomer=(a:any)=>{
+
+  customerTable.name=a.customerName;
+     customerTable.address=a.customerAddress;
+     customerTable.phone=a.customerPhone;
+     customerTable.time=a.customerJointime;
+     customerTable.staff=a.chargeStaff; 
+   }
 
     function cancelClick() {
         drawer2.value = false
@@ -232,7 +200,7 @@
             })
     }
 
-
+  
 
     const handleClose = (done: () => void) => {
         ElMessageBox.confirm('是否关闭客户详情页面？')
@@ -263,9 +231,9 @@
     const pageTotal = ref(0);
     // 获取表格数据
     const getData = () => {
-        fetchData().then(res => {
-            tableData.value = res.data.list;
-            pageTotal.value = res.data.pageTotal || 50;
+        getcustomer().then(res => {
+            tableData.value = res.data.data;
+           
         });
     };
     getData();
