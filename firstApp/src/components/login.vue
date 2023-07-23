@@ -1,5 +1,4 @@
-<template>
-     
+<template>   
      <div class="all">
         <JawboneHeroImage style="z-index:-1;position:relative;" />
         <div class="logo" style="display: flex; align-items: center;padding-bottom: 20px;margin-left: 30%;padding-top: 60px; " >
